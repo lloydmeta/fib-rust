@@ -20,7 +20,7 @@ fn engage_user() -> Result<(), CliError> {
 fn parse_positive_num(s: String) -> Result<i64, CliError> {
   match s.trim().parse::<i64>() {
     Ok(n)  if n >= 0 => Ok(n),
-    Ok(_) => Err(CliError::IllegalArgument { description: "No negatives allowed" }),
+    Ok(_) => Err(CliError::IllegalArgument("No negatives allowed")),
     Err(err) => Err(CliError::Parse(err))
   }
 }
@@ -38,5 +38,5 @@ fn read_stdio() -> Result<String, CliError> {
 enum CliError {
     Io(io::Error),
     Parse(num::ParseIntError),
-    IllegalArgument { description: &'static str }
+    IllegalArgument(&'static str)
 }
