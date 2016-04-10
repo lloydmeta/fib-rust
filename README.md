@@ -1,4 +1,4 @@
-# Fibonacci in Rust
+# Fibonacci in Rust [![Build Status](https://travis-ci.org/lloydmeta/fib-rust.svg?branch=master)](https://travis-ci.org/lloydmeta/fib-rust)
 
 Done as an exercise.
 
@@ -8,4 +8,4 @@ Done as an exercise.
 
 ## Tests
 
-``$ cargo test`
+`$ cargo test`
