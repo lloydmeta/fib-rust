@@ -1,6 +1,9 @@
 /// Returns the fibonacci value at the passed in index
+///
+/// #Example
 /// ```
-/// assert!(fib_at_index(3) == 3;
+/// use self::fibonacci::maths::fib::fib_at_index;
+/// assert!(fib_at_index(3) == 3);
 /// ```
 pub fn fib_at_index(i: i64) -> u64 {
     if i < 0 {
