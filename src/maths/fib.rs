@@ -1,3 +1,7 @@
+/// Returns the fibonacci value at the passed in index
+/// ```
+/// assert!(fib_at_index(3) == 3;
+/// ```
 pub fn fib_at_index(i: i64) -> u64 {
     if i < 0 {
         panic!("Got negative index")
