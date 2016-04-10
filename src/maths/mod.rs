@@ -1,4 +1,4 @@
 pub mod fib;
 
 #[cfg(test)]
-mod tests;
+mod fib_tests;
