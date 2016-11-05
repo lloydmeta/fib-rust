@@ -1,15 +1,14 @@
+
 /// Returns the fibonacci value at the passed in index
 ///
 /// #Example
 /// ```
 /// use self::fibonacci::maths::fib::fib_at_index;
-/// assert!(fib_at_index(3) == 3);
+/// assert!(fib_at_index(3) == 2);
 /// ```
 pub fn fib_at_index(i: i64) -> u64 {
-    if i < 0 {
-        panic!("Got negative index")
-    } else if i == 0 || i == 1 {
-        1
+    if i <= 1 {
+        i as u64
     } else {
         fib_non_trivial(i)
     }
@@ -19,8 +18,8 @@ pub fn fib_at_index(i: i64) -> u64 {
 fn fib_non_trivial(i: i64) -> u64 {
     // Rust does not have TOC so we use mutable refs to get around stack overflow problems
     let mut current_index = 2;
-    let mut acc_prev = FIB0;
-    let mut acc = FIB0 + FIB1;
+    let mut acc_prev = 1;
+    let mut acc = 1;
     while current_index < i {
         let next_prev = acc;
         acc = acc + acc_prev;
@@ -29,6 +28,3 @@ fn fib_non_trivial(i: i64) -> u64 {
     }
     acc
 }
-
-const FIB0: u64 = 1;
-const FIB1: u64 = 1;
