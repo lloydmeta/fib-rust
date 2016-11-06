@@ -82,12 +82,13 @@ impl Memoed {
             // First try to acquire a read lock and read from the cache
             // For some reason, moving this into the match causes the lock
             // to never move out of scope, causing us to deadlock when trying to write
-            let lock_result =  self.cache.read();
+            let lock_result = self.cache.read();
             match lock_result {
                 Ok(ref data) if data.len() > to => Some(data[to].clone()),
-                _ => None
+                _ => None,
             }
-        }.unwrap_or_else(|| {
+        }
+        .unwrap_or_else(|| {
             // Unable to retrieve from the cache, so we need to grab a write lock and
             // start generating
             let mut data = self.cache.write().unwrap();

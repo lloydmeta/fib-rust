@@ -7,7 +7,7 @@ use std::env::args;
 use std::io::stdin;
 
 use num::bigint::BigUint;
-use fibonacci::maths::fib::{ Memoed, fib_at_index };
+use fibonacci::maths::fib::{Memoed, fib_at_index};
 
 fn main() {
     // First argument is usually the path of the executable, so we use
@@ -16,10 +16,11 @@ fn main() {
         one_off_mod(s)
     } else {
         interactive_mode()
-    }.unwrap()
+    }
+    .unwrap()
 }
 
-fn one_off_mod(input: String) ->  Result<(), CliError> {
+fn one_off_mod(input: String) -> Result<(), CliError> {
     let index = try!(parse_positive_num(input));
     let fib_value = fib_at_index(index);
     Ok(print_result(index, fib_value))
