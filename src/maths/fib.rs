@@ -1,4 +1,4 @@
-use std::sync::RwLock;
+use std::sync::{ RwLock, Arc };
 use num::bigint::BigUint;
 use num::traits::{Zero, One};
 
@@ -37,7 +37,7 @@ fn fib_non_trivial(i: usize) -> BigUint {
 }
 
 pub struct Memoed {
-    cache: RwLock<Vec<BigUint>>,
+    cache: RwLock<Vec<Arc<BigUint>>>,
 }
 
 impl Memoed {
@@ -51,14 +51,14 @@ impl Memoed {
     /// # use self::fibonacci::maths::fib::Memoed;
     /// # fn main() {
     /// let mut fib_gen = Memoed::new();
-    /// assert_eq!(fib_gen.at_index(3), 2.to_biguint().unwrap());
+    /// assert_eq!(*fib_gen.at_index(3), 2.to_biguint().unwrap());
     /// # }
     ///
     /// ```
     pub fn new() -> Memoed {
         let mut cache = Vec::with_capacity(1000);
-        cache.push(Zero::zero());
-        cache.push(One::one());
+        cache.push(Arc::new(Zero::zero()));
+        cache.push(Arc::new(One::one()));
         Memoed { cache: RwLock::new(cache) }
     }
 
@@ -74,10 +74,10 @@ impl Memoed {
     /// # use self::fibonacci::maths::fib::Memoed;
     /// # fn main() {
     /// let mut fib_gen = Memoed::new();
-    /// assert_eq!(fib_gen.at_index(3), 2.to_biguint().unwrap());
+    /// assert_eq!(*fib_gen.at_index(3), 2.to_biguint().unwrap());
     /// # }
     /// ```
-    pub fn at_index(&self, to: usize) -> BigUint {
+    pub fn at_index(&self, to: usize) -> Arc<BigUint> {
         {
             // First try to acquire a read lock and read from the cache
             // For some reason, moving this into the match causes the lock
@@ -98,8 +98,8 @@ impl Memoed {
                 data[to].clone()
             } else {
                 for current_max in data.len()..to + 1 {
-                    let sum = &data[current_max - 1] + &data[current_max - 2];
-                    data.push(sum);
+                    let sum = &*data[current_max - 1] + &*data[current_max - 2];
+                    data.push(Arc::new(sum));
                 }
                 data[to].clone()
             }
