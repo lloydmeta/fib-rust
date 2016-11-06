@@ -37,13 +37,23 @@ fn test_memoed() {
 #[test]
 fn test_memoed_multithreaded() {
     let memoed = Arc::new(Memoed::new());
+
+    // Make a vector to hold the children which are spawned.
+    let mut children = vec![];
+
     for _ in 0..10 {
         let memoed = memoed.clone();
-        let _ = thread::spawn(move || {
+        let t = thread::spawn(move || {
             for i in 0 .. 30 {
                 let f = memoed.at_index(i);
                 assert_eq!(f, fib_at_index(i as i64));
             }
         });
+        children.push(t);
+    }
+
+    for child in children {
+        // Wait for the thread to finish. Returns a result.
+        let _ = child.join();
     }
 }
