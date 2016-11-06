@@ -56,10 +56,10 @@ impl Memoed {
     ///
     /// ```
     pub fn new() -> Memoed {
-        let mut new_cache = Vec::with_capacity(1000);
-        let min_cache = &mut vec![Zero::zero(), One::one()];
-        new_cache.append(min_cache);
-        Memoed { cache: RwLock::new(new_cache) }
+        let mut cache = Vec::with_capacity(1000);
+        cache.push(Zero::zero());
+        cache.push(One::one());
+        Memoed { cache: RwLock::new(cache) }
     }
 
     /// Returns the Fibonacci value at the given value
