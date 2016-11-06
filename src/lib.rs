@@ -1,3 +1,3 @@
-//extern crate num_traits;
+extern crate num;
 
 pub mod maths;

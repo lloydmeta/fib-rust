@@ -3,27 +3,30 @@ extern crate fibonacci;
 use self::fibonacci::maths::fib::{ fib_at_index, Memoed };
 use std::thread;
 use std::sync::Arc;
+use num::bigint::{ ToBigUint, BigUint };
+use num::traits::{Zero, One};
 
 #[test]
 fn test_fib0() {
-    assert_eq!(fib_at_index(0), 0);
+    assert_eq!(fib_at_index(0), Zero::zero());
 }
 
 #[test]
 fn test_fib1() {
-    assert_eq!(fib_at_index(1), 1);
+    assert_eq!(fib_at_index(1), One::one());
 }
 
 #[test]
 fn test_fib_after_1() {
     let mut i = 3;
-    let mut prev = 1;
-    let mut current = 1;
+    let mut prev: BigUint = One::one();
+    let mut current: BigUint = One::one();
     while i < 90 {
-        let next_prev = current;
+        let next_prev = current.clone();
+        let expected = prev + &next_prev;
         current = fib_at_index(i);
-        assert_eq!(current, (prev + next_prev));
-        prev = next_prev;
+        assert_eq!(current, expected);
+        prev = next_prev.clone();
         i += 1;
     }
 }
@@ -31,7 +34,7 @@ fn test_fib_after_1() {
 #[test]
 fn test_memoed() {
     let memoed = Memoed::new();
-    assert_eq!(memoed.at_index(10), 55)
+    assert_eq!(memoed.at_index(10), 55.to_biguint().unwrap())
 }
 
 #[test]
@@ -46,7 +49,7 @@ fn test_memoed_multithreaded() {
         let t = thread::spawn(move || {
             for i in 0 .. 30 {
                 let f = memoed.at_index(i);
-                assert_eq!(f, fib_at_index(i as i64));
+                assert_eq!(f, fib_at_index(i as usize));
             }
         });
         children.push(t);
