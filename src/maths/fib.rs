@@ -81,7 +81,7 @@ impl Memoed {
         {
             // First try to acquire a read lock and read from the cache
             // For some reason, moving this into the match causes the lock
-            // to never move out of scope, causing use todeadlock when trying to write
+            // to never move out of scope, causing use to deadlock when trying to write
             let lock_result =  self.cache.read();
             match lock_result {
                 Ok(ref data) if data.len() > to => Some(data[to].clone()),
