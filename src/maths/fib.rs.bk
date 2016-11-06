@@ -1,62 +1,79 @@
-use std::sync::{Arc, Mutex};
-
+use std::sync::RwLock;
+use num::bigint::BigUint;
+use num::traits::{Zero, One};
 
 /// Returns the fibonacci value at the passed in index
 ///
 /// #Example
 /// ```
-/// use self::fibonacci::maths::fib::fib_at_index;
-/// assert!(fib_at_index(3) == 2);
+/// # extern crate num;
+/// # extern crate fibonacci;
+/// # use num::bigint::ToBigUint;
+/// # use self::fibonacci::maths::fib::fib_at_index;
+/// # fn main() {
+/// assert!(fib_at_index(3) == 2.to_biguint().unwrap());
+/// # }
 /// ```
-pub fn fib_at_index(i: i64) -> usize {
-    if i <= 1 {
-        i as usize
-    } else {
-        fib_non_trivial(i)
+pub fn fib_at_index(i: usize) -> BigUint {
+    match i {
+        0 => Zero::zero(),
+        1 => One::one(),
+        _ => fib_non_trivial(i),
     }
+
 }
 
 // Called when index is greater than 1
-fn fib_non_trivial(i: i64) -> usize {
+fn fib_non_trivial(i: usize) -> BigUint {
     // Rust does not have TOC so we use mutable refs to get around stack overflow problems
-    let mut current_index = 2;
-    let mut acc_prev = 1;
-    let mut acc = 1;
-    while current_index < i {
-        let next_prev = acc;
+    let mut acc_prev: BigUint = One::one();
+    let mut acc: BigUint = One::one();
+    for _ in 2..i {
+        let next_prev = acc.clone();
         acc = acc + acc_prev;
         acc_prev = next_prev;
-        current_index += 1;
     }
     acc
 }
 
 pub struct Memoed {
-    cache: Arc<Mutex<Vec<usize>>>,
+    cache: RwLock<Vec<BigUint>>,
 }
 
 impl Memoed {
-
     pub fn new() -> Memoed {
         let mut new_cache = Vec::with_capacity(1000);
-        let min_cache = &mut vec![0, 1];
+        let min_cache = &mut vec![Zero::zero(), One::one()];
         new_cache.append(min_cache);
-        Memoed { cache: Arc::new(Mutex::new(new_cache))}
+        Memoed { cache: RwLock::new(new_cache) }
     }
 
-    pub fn at_index(&self, to: usize) -> usize {
-        let cloned = self.cache.clone();
-        let mut data = cloned.lock().unwrap();
+    pub fn at_index(&self, to: usize) -> BigUint {
+        let mut ret: BigUint = Zero::zero();
+        let mut found_cached = false;
+        {
+            if let Ok(data) = self.cache.read() {
+                if data.len() > to {
+                    ret = data[to].clone();
+                    found_cached = true;
+                }
 
-        if data.len() > to {
-            data[to]
-        } else {
-            for current_max in data.len() .. to + 1 {
-                let sum = data[current_max - 1] + data[current_max -2];
-                data.push(sum);
             }
-            data[to]
         }
-
+        if !found_cached { // we need to start generating
+            let mut data = self.cache.write().unwrap();
+            // Check one more time in case work was done in another thread while we were acquiring the
+            // write lock
+            if data.len() > to {
+                ret = data[to].clone()
+            } else {
+                for current_max in data.len()..to + 1 {
+                    let sum = data[current_max - 1].clone() + &data[current_max - 2];
+                    data.push(sum);
+                }
+                ret = data[to].clone()
+            }
+        }
+        ret
     }
 }
