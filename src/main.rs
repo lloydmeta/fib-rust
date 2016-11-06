@@ -10,9 +10,9 @@ use num::bigint::BigUint;
 use fibonacci::maths::fib::{ Memoed, fib_at_index };
 
 fn main() {
-    let args: Vec<String> = args().collect();
-    // First argument is usually the path of the executable
-    if let Some(s) = args.get(1) {
+    // First argument is usually the path of the executable, so we use
+    // the second one instead
+    if let Some(s) = args().skip(1).next() {
         one_off_mod(s.trim().to_owned())
     } else {
         interactive_mode()
