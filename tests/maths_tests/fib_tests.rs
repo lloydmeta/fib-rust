@@ -41,7 +41,7 @@ fn test_memoed_multithreaded() {
     // Make a vector to hold the children which are spawned.
     let mut children = vec![];
 
-    for _ in 0..10 {
+    for _ in 0..100 {
         let memoed = memoed.clone();
         let t = thread::spawn(move || {
             for i in 0 .. 30 {
