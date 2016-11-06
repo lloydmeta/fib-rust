@@ -2,9 +2,35 @@
 
 Done as an exercise.
 
+## Areas explored
+
+- Mutex and RWLock (latter replaced former)
+- `num` crate
+- Having tests in a separate directory
+
 ## Running
 
-`$ cargo run`
+Command mode:
+
+```bash
+$ cargo run -- 10
+
+Fibonacci[10] is 55
+```
+
+REPL mode:
+
+```bash
+$ cargo run
+
+**************** Interactive Mode ********************
+ ctrl+c or ctrl+d or enter any invalid number to exit 
+******************************************************
+
+Which Fibonacci index are you interested in?
+100
+Fibonacci[100] is 354224848179261915075
+```
 
 ## Tests
 
