@@ -51,7 +51,7 @@ impl Memoed {
     /// # use self::fibonacci::maths::fib::Memoed;
     /// # fn main() {
     /// let mut fib_gen = Memoed::new();
-    /// assert_eq!(fib_gen.at_index(3), 2.to_biguint().unwrap());
+    /// assert_eq!(*fib_gen.at_index(3), 2.to_biguint().unwrap());
     /// # }
     ///
     /// ```
@@ -74,7 +74,7 @@ impl Memoed {
     /// # use self::fibonacci::maths::fib::Memoed;
     /// # fn main() {
     /// let mut fib_gen = Memoed::new();
-    /// assert_eq!(fib_gen.at_index(3), 2.to_biguint().unwrap());
+    /// assert_eq!(*fib_gen.at_index(3), 2.to_biguint().unwrap());
     /// # }
     /// ```
     pub fn at_index(&self, to: usize) -> Arc<BigUint> {
