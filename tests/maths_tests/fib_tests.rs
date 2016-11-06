@@ -34,7 +34,7 @@ fn test_fib_after_1() {
 #[test]
 fn test_memoed() {
     let memoed = Memoed::new();
-    assert_eq!(memoed.at_index(10), 55.to_biguint().unwrap())
+    assert_eq!(*memoed.at_index(10), 55.to_biguint().unwrap())
 }
 
 #[test]
@@ -49,7 +49,7 @@ fn test_memoed_multithreaded() {
         let t = thread::spawn(move || {
             for i in 0 .. 30 {
                 let f = memoed.at_index(i);
-                assert_eq!(f, fib_at_index(i as usize));
+                assert_eq!(*f, fib_at_index(i as usize));
             }
         });
         children.push(t);

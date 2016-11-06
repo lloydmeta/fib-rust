@@ -2,11 +2,11 @@ extern crate num;
 extern crate fibonacci;
 
 use std::io;
+use std::fmt::Display;
 use std::num::ParseIntError;
 use std::env::args;
 use std::io::stdin;
 
-use num::bigint::BigUint;
 use fibonacci::maths::fib::{Memoed, fib_at_index};
 
 fn main() {
@@ -40,7 +40,7 @@ fn interactive_mode() -> Result<(), CliError> {
     }
 }
 
-fn print_result(idx: usize, fib: BigUint) {
+fn print_result<A: Display>(idx: usize, fib: A) {
     println!("Fibonacci[{}] is {}", idx, fib)
 }
 
