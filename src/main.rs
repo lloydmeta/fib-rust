@@ -31,7 +31,7 @@ fn interactive_mode() -> Result<(), CliError> {
     println!("******************************************************");
     let fib_gen = Memoed::new();
     loop {
-        println!("Which Fibonacci index are you interested in?");
+        println!("\nWhich Fibonacci index are you interested in?");
         let input = try!(read_stdio());
         let index = try!(parse_positive_num(input));
         let fib_value = fib_gen.at_index(index);
