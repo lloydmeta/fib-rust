@@ -36,11 +36,12 @@ pub struct Memoed {
 }
 
 impl Memoed {
+
     pub fn new() -> Memoed {
         let mut new_cache = Vec::with_capacity(1000);
         let min_cache = &mut vec![0, 1];
         new_cache.append(min_cache);
-        Memoed { cache: Arc::new(Mutex::new(new_cache)) }
+        Memoed { cache: Arc::new(Mutex::new(new_cache))}
     }
 
     pub fn at_index(&self, to: usize) -> usize {
@@ -50,8 +51,8 @@ impl Memoed {
         if data.len() > to {
             data[to]
         } else {
-            for current_max in data.len()..to + 1 {
-                let sum = data[current_max - 1] + data[current_max - 2];
+            for current_max in data.len() .. to + 1 {
+                let sum = data[current_max - 1] + data[current_max -2];
                 data.push(sum);
             }
             data[to]
