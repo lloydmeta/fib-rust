@@ -13,7 +13,7 @@ fn main() {
     // First argument is usually the path of the executable, so we use
     // the second one instead
     if let Some(s) = args().skip(1).next() {
-        one_off_mod(s.trim().to_owned())
+        one_off_mod(s)
     } else {
         interactive_mode()
     }.unwrap()
