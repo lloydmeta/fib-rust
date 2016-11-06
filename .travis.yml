@@ -1,5 +1,9 @@
 language: rust
 
+rust:
+  - stable
+  - nightly
+
 after_success:
   - if [ "${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}" != "master" ] && [ "$TRAVIS_RUST_VERSION" == "nightly" ]; then
         cargo install cargo-benchcmp --force;
